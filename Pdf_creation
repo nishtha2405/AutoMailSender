@@ -1,0 +1,136 @@
+function Create_bulk_pdf() {
+
+  var doc_file = DriveApp.getFileById("1G3fynI1A3aqxvccfdXa1WiUKCLwJ703Q7_V48RigD2g");
+  var temp_folder = DriveApp.getFolderById("1PecBR0P3VGChNzbt3_np95M15dGubSRh");
+  var pdf_folder = DriveApp.getFolderById("1tPLawSPiCCh38kBaUAH2NIkrU3vJyJh-");
+
+
+
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Court Status");
+  var data = sheet.getRange(2,1, sheet.getLastRow()-1,11).getValues();
+  //Logger.log(data);
+  
+  var a1= sheet.getRange("C1").getValue();
+  var a2= sheet.getRange("D1").getValue();
+  var a3= sheet.getRange("E1").getValue();
+  var a4= sheet.getRange("F1").getValue();
+  var a5= sheet.getRange("G1").getValue();
+  var a6= sheet.getRange("H1").getValue();
+  var a7= sheet.getRange("I1").getValue();
+  var a8= sheet.getRange("J1").getValue();
+  var a9= sheet.getRange("K1").getValue();
+  var a10= sheet.getRange("L1").getValue();
+  var a11= sheet.getRange("M1").getValue();
+  var a12= sheet.getRange("N1").getValue();
+
+  //Logger.log(a1);
+  //Logger.log(a2);
+  //Logger.log(a3);
+  //Logger.log(a4);
+  //Logger.log(a5);
+  //Logger.log(a6);
+  //Logger.log(a7);
+  //Logger.log(a8);
+
+data.forEach(function(row,i){
+  var name_of_client=row[5];
+  Logger.log(name_of_client);
+
+  var appeal=row[1];
+
+  var court=row[2];
+  Logger.log(court);
+
+  var dof=row[3];
+  Logger.log(dof);
+
+  var cnum=row[4];
+  Logger.log(cnum);
+
+  var opp=row[6];
+  Logger.log(opp);
+  var brief_for=row[7];
+  Logger.log(brief_for);
+
+  var drafting=row[8];
+  Logger.log(drafting);
+
+  var current_status=row[9];
+  Logger.log(current_status);
+
+  var ldate=row[10];
+  Logger.log(ldate);
+
+  var nextdate=row[11];
+  Logger.log(nextdate);
+
+  var decided_on=row[12];
+  Logger.log(decided_on);
+
+  var execution=row[13];
+  Logger.log(execution);
+  
+time_alert(sheet,data);
+ // Create_pdf(doc_file,temp_folder,pdf_folder,a1,a2,a3,a4,a5,a6,a7,a8,name_of_client,appeal,court,dof,cnum,opp,current_status,ldate,nextdate,brief_for,drafting,decided_on,execution);
+
+})
+
+
+
+}
+
+function Create_pdf(doc_file,temp_folder,pdf_folder,a1,a2,a3,a4,a5,a6,a7,a8,name_of_client,appeal,court,dof,cnum,opp,current_status,ldate,nextdate,brief_for,drafting,decided_on,execution){
+
+  var temp_file = doc_file.makeCopy(temp_folder);
+  var temp_doc_file = DocumentApp.openById(temp_file.getId());
+  var body = temp_doc_file.getBody();
+
+  temp_doc_file.getBody().replaceText("{name}",name_of_client);
+  temp_doc_file.getBody().replaceText("{Court", court);
+  temp_doc_file.getBody().replaceText("{Appeal}",appeal);
+  temp_doc_file.getBody().replaceText("{Date of filing}",dof);
+  temp_doc_file.getBody().replaceText("{Case No.}", cnum);
+  temp_doc_file.getBody().replaceText("{Opp. Party}",opp);
+  temp_doc_file.getBody().replaceText("{Current}",current_status);
+  temp_doc_file.getBody().replaceText("{Previous}",ldate);
+  temp_doc_file.getBody().replaceText("{Next Date}",nextdate);
+  temp_doc_file.getBody().replaceText("{Brief for}",brief_for);
+  temp_doc_file.getBody().replaceText("{Drafting}",drafting);
+
+ 
+  temp_doc_file.saveAndClose();
+
+ var pdf_content = temp_file.getAs(MimeType.PDF);
+ var PDF_File = pdf_folder.createFile(pdf_content).setName("Case Details");
+ temp_folder.removeFile(temp_file);
+
+  MailApp.sendEmail("pandeynishtha03@gmail.com" ,"Case Scheduled For tomorrow  ","Case Details",{
+
+
+    attachments: [PDF_File.getAs(MimeType.PDF)]
+  });
+
+
+}
+function time_alert(sheet,data){
+  var today = new Date();
+  var todayMonth = today.getMonth() + 1;
+  var todayDay = today.getDate();
+  var todayYear = today.getFullYear();
+  for (var i = 0; i < data.length; ++i) {
+    var row = data[i];
+    var nextDateMonth = new Date(row[6]).getMonth() + 1;
+    var nextDateDay = new Date(row[6]).getDate();
+    var nextDateYear = new Date(row[6]).getYear();
+
+    if (
+      nextDateMonth === todayMonth &&
+      nextDateDay === todayDay &&
+      nextDateYear === todayYear
+    ) 
+    {
+      Create_pdf(doc_file,temp_folder,pdf_folder,a1,a2,a3,a4,a5,a6,a7,a8,name_of_client,appeal,court,dof,cnum,opp,current_status,ldate,nextdate,brief_for,drafting,decided_on,execution);
+      
+    }
+  }
+}
