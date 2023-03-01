@@ -7,7 +7,7 @@ function Create_bulk_pdf() {
 
 
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Court Status");
-  var data = sheet.getRange(2,1, sheet.getLastRow()-1,11).getValues();
+  var data = sheet.getRange(2,1, sheet.getLastRow()-1,14).getValues();
   //Logger.log(data);
   
   var a1= sheet.getRange("C1").getValue();
@@ -119,9 +119,9 @@ function time_alert(sheet,data){
   var todayYear = today.getFullYear();
   for (var i = 0; i < data.length; ++i) {
     var row = data[i];
-    var nextDateMonth = new Date(row[6]).getMonth() + 1;
-    var nextDateDay = new Date(row[6]).getDate();
-    var nextDateYear = new Date(row[6]).getYear();
+    var nextDateMonth = new Date(row[11]).getMonth() + 1;
+    var nextDateDay = new Date(row[11]).getDate();
+    var nextDateYear = new Date(row[11]).getYear();
 
     if (
       nextDateMonth === todayMonth &&
