@@ -75,8 +75,6 @@ time_alert(sheet,data);
 
 })
 
-
-
 }
 
 function Create_pdf(doc_file,temp_folder,pdf_folder,a1,a2,a3,a4,a5,a6,a7,a8,name_of_client,appeal,court,dof,cnum,opp,current_status,ldate,nextdate,brief_for,drafting,decided_on,execution){
@@ -113,24 +111,18 @@ function Create_pdf(doc_file,temp_folder,pdf_folder,a1,a2,a3,a4,a5,a6,a7,a8,name
 
 }
 function time_alert(sheet,data){
-  var today = new Date();
-  var todayMonth = today.getMonth() + 1;
-  var todayDay = today.getDate();
-  var todayYear = today.getFullYear();
+  var today = Utilities.formatDate(new Date(), "IST", "MM/dd/yyyy");
+  //Logger.log(today);
+
   for (var i = 0; i < data.length; ++i) {
     var row = data[i];
-    var nextDateMonth = new Date(row[11]).getMonth() + 1;
-    var nextDateDay = new Date(row[11]).getDate();
-    var nextDateYear = new Date(row[11]).getYear();
-
-    if (
-      nextDateMonth === todayMonth &&
-      nextDateDay === todayDay &&
-      nextDateYear === todayYear
-    ) 
-    {
+    var nextDate =  Utilities.formatDate(new Date(row[11]),"IST","MM/dd/yyyy");
+    //Logger.log(nextDate);
+    
+    if (today==nextDate) {
+      Logger.log(nextDate);
       Create_pdf(doc_file,temp_folder,pdf_folder,a1,a2,a3,a4,a5,a6,a7,a8,name_of_client,appeal,court,dof,cnum,opp,current_status,ldate,nextdate,brief_for,drafting,decided_on,execution);
-      
+
     }
   }
 }
