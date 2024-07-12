@@ -23,14 +23,6 @@ function Create_bulk_pdf() {
   var a11= sheet.getRange("M1").getValue();
   var a12= sheet.getRange("N1").getValue();
 
-  //Logger.log(a1);
-  //Logger.log(a2);
-  //Logger.log(a3);
-  //Logger.log(a4);
-  //Logger.log(a5);
-  //Logger.log(a6);
-  //Logger.log(a7);
-  //Logger.log(a8);
 
 data.forEach(function(row,i){
   var name_of_client=row[5];
@@ -70,7 +62,7 @@ data.forEach(function(row,i){
   var execution=row[13];
   Logger.log(execution);
   
-time_alert(sheet,data);
+time_alert(row, doc_file, temp_folder, pdf_folder, headers, name_of_client, appeal, court, dof, cnum, opp, current_status, ldate, nextdate, brief_for, drafting, decided_on, execution);
  // Create_pdf(doc_file,temp_folder,pdf_folder,a1,a2,a3,a4,a5,a6,a7,a8,name_of_client,appeal,court,dof,cnum,opp,current_status,ldate,nextdate,brief_for,drafting,decided_on,execution);
 
 })
@@ -83,17 +75,17 @@ function Create_pdf(doc_file,temp_folder,pdf_folder,a1,a2,a3,a4,a5,a6,a7,a8,name
   var temp_doc_file = DocumentApp.openById(temp_file.getId());
   var body = temp_doc_file.getBody();
 
-  temp_doc_file.getBody().replaceText("{name}",name_of_client);
-  temp_doc_file.getBody().replaceText("{Court", court);
-  temp_doc_file.getBody().replaceText("{Appeal}",appeal);
-  temp_doc_file.getBody().replaceText("{Date of filing}",dof);
-  temp_doc_file.getBody().replaceText("{Case No.}", cnum);
-  temp_doc_file.getBody().replaceText("{Opp. Party}",opp);
-  temp_doc_file.getBody().replaceText("{Current}",current_status);
-  temp_doc_file.getBody().replaceText("{Previous}",ldate);
-  temp_doc_file.getBody().replaceText("{Next Date}",nextdate);
-  temp_doc_file.getBody().replaceText("{Brief for}",brief_for);
-  temp_doc_file.getBody().replaceText("{Drafting}",drafting);
+  Body.replaceText("{name}",name_of_client);
+  Body.replaceText("{Court}", court);
+  Body.replaceText("{Appeal}",appeal);
+  Body.replaceText("{Date of filing}",dof);
+  Body.replaceText("{Case No.}", cnum);
+  Body.replaceText("{Opp. Party}",opp);
+  Body.replaceText("{Current}",current_status);
+  Body.replaceText("{Previous}",ldate);
+  Body.replaceText("{Next Date}",nextdate);
+  Body.replaceText("{Brief for}",brief_for);
+  Body.replaceText("{Drafting}",drafting);
 
  
   temp_doc_file.saveAndClose();
@@ -110,7 +102,7 @@ function Create_pdf(doc_file,temp_folder,pdf_folder,a1,a2,a3,a4,a5,a6,a7,a8,name
 
 
 }
-function time_alert(sheet,data){
+function time_alert(row, doc_file, temp_folder, pdf_folder, a1, a2, a3, a4, a5, a6, a7, a8, name_of_client, appeal, court, dof, cnum, opp, current_status, ldate, nextdate, brief_for, drafting, decided_on, execution){
   var today = Utilities.formatDate(new Date(), "IST", "MM/dd/yyyy");
   //Logger.log(today);
 
