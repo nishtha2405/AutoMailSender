@@ -1,7 +1,7 @@
 ### Automated Case Details PDF Generation and Email Notification System
 
 #### Objective:
-The goal of this project is to automate the generation of case detail PDFs from a Google Sheets spreadsheet and send email notifications with the PDFs attached, particularly when a case is scheduled for the current day.
+The goal of this project is to automate the generation of case detail PDFs from a spreadsheet and send email notifications with the PDFs attached, particularly when a case is scheduled for the current day.
 
 #### Key Components:
 
